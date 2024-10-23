@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Profesional</title>
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: top 0.3s;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        #hero:hover {
+            background-color: #444;
+            transition: all 0.5s ease;
+        }
+
+        /* About Me Section */
+        #about-me {
+            padding: 100px 20px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        /* Contact Me Section */
+        #contact-me {
+            padding: 100px 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        /* Form Contact */
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        form input, form textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            padding: 10px;
+            border: none;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Animasi Hover pada Gambar */
+        img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal Pop-up */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            animation: slide-down 0.5s ease-out;
+        }
+
+        @keyframes slide-down {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: #333;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 10px 15px;
+            }
+
+            #about-me, #contact-me {
+                padding: 50px 10px;
+            }
+
+            form {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header id="navbar">
+        <div>Logo</div>
+        <nav>
+            <a href="#hero">Home</a>
+            <a href="#about-me">About Me</a>
+            <a href="#contact-me">Contact Me</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <h1>Selamat Datang di Portofolio Saya</h1>
+        <p>Desain minimalis dengan animasi interaktif</p>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about-me">
+        <h2>Tentang Saya</h2>
+        <p>Saya adalah seorang web developer dengan pengalaman dalam pengembangan front-end dan back-end.</p>
+        <img src="/Web/assets/bg2.png" alt="Gambar Tentang Saya" loading="lazy">
+    </section>
+
+    <!-- Contact Me Section -->
+    <section id="contact-me">
+        <h2>Hubungi Saya</h2>
+        <form>
+            <input type="text" placeholder="Nama" required>
+            <input type="email" placeholder="Email" required>
+            <textarea placeholder="Pesan" required></textarea>
+            <button type="submit">Kirim</button>
+        </form>
+    </section>
+
+    <!-- Modal Pop-up -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Form berhasil dikirim! Terima kasih telah menghubungi saya.</p>
+        </div>
+    </div>
+
+    <script>
+        // Navbar hide on scroll with debounce
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+
+        function debounce(func, wait = 20, immediate = true) {
+            let timeout;
+            return function() {
+                const context = this, args = arguments;
+                const later = function() {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                const callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        }
+
+        window.addEventListener('scroll', debounce(function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                navbar.style.top = '-70px'; // Sembunyikan navbar
+            } else {
+                navbar.style.top = '0'; // Tampilkan navbar
+            }
+            lastScrollTop = scrollTop;
+        }, 100));
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Modal Pop-up untuk form
+        const form = document.querySelector('form');
+        const modal = document.getElementById('successModal');
+        const closeModal = document.querySelector('.close');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = form.querySelector('input[type="text"]');
+            const email = form.querySelector('input[type="email"]');
+            const message = form.querySelector('textarea');
+            
+            // Validasi Nama, Email, dan Pesan
+            if (name.value.trim() === '' || message.value.trim() === '') {
+                alert('Isi semua kolom.');
+                return;
+            }
+            
+// Jika validasi berhasil, tampilkan modal dengan animasi
+            modal.classList.add('show');
+            form.reset();
+        });
+
+        // Tutup modal saat tombol "X" atau luar modal diklik
+        closeModal.addEventListener('click', function() {
+            modal.classList.remove('show');
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                modal.classList.remove('show');
+            }
+        });
+
+    </script>
+
+</body>
+</html>
